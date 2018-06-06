@@ -52,7 +52,9 @@ public class Application {
 
         int wicketWinnings = 0;
         int gameWinnings = 0;
+        int gameStartingCash=0;
 
+        int walkAwayTolerance;
         int lowPoint = 0;
         int lowestLowPoint = 0;
 
@@ -71,33 +73,46 @@ public class Application {
 
         //Number of games config
         int overtimeTolerance = 0;
-        int tripsToVegas = 5;
+        int tripsToVegas = 10000;
         int possibleGamesPerDay=1;
         int daysPerTrip = 1;
 
         //money config
         boolean bankResetMode = false;
-        int bankStartingCash=2000;
+        int bankStartingCash=50;
 
         //Game Config
-        int betDefault = 2;
-        int perGameSpinCount = 200;
-        int fatigue = 220;
+        int betDefault = 10;
+        int perGameSpinCount = 100;
+        int fatigue = 400;
         int cutAndRun = 9;
-        int quitThisGameInDefeat = 2100;
-        int quitThisGameInTriumph = 4000;
+        int numberOfWicketsLossTolerance = 1;
+        double quitThisGameInTriumph;
 
         //Reporting Config
         boolean spinMode = false;
-        boolean gameMode = true;
+        boolean gameMode = false;
         boolean weekMode = false;
 
         bank = bankStartingCash;
-        config = "bet= " + betDefault + " spins per game= " + perGameSpinCount + " bank= " + bank;
+        config = "bet= " + betDefault + " spins per game= " + perGameSpinCount;
         lowestLowPoint = 0;
 
         //Trip loop
         while (tripsTakenToVegas < tripsToVegas) {
+
+            int wicketLoss = 0;
+            //Calculate wicket loss
+            for(int i=1; i <= cutAndRun; i++){
+                int bonus = i-chipsOnBoardDefault;
+                wicketLoss+=betDefault*i*chipsOnBoardDefault;
+                if(bonus>0){
+                    wicketLoss+=bonus*betDefault;
+                }
+            }
+
+            walkAwayTolerance = (numberOfWicketsLossTolerance * wicketLoss) -1;
+            quitThisGameInTriumph = wicketLoss * 1.5;
 
             gamesPlayed = 0;
             tripTotal = 0;
@@ -122,6 +137,7 @@ public class Application {
                     }
                 }
 
+                gameStartingCash = bank;
                 gamesPlayed++;
                 gamesPlayedToday++;
                 spun = 0;
@@ -143,6 +159,7 @@ public class Application {
 
                     if (spin <=  chipsOnBoard) {
                         //WINNING
+                        bank+=schroedingersWin;
                         wicketWinnings = wicketWinnings + (schroedingersWin);
                         gameWinnings+=wicketWinnings;
 
@@ -158,7 +175,7 @@ public class Application {
                        if(spinMode){ System.out.println("win " + wicketWinnings + " Running total: " + gameWinnings + " Spins = " + rawSpins);}
 
                         if (wicketWinnings < 0 && spun == perGameSpinCount) {
-                            spun = spun - 5;
+                            spun = spun - chipsOnBoardDefault;
                         }
 
                         wicketWinnings = 0;
@@ -167,9 +184,10 @@ public class Application {
                     } else {
 
                         //LOSING
+                        bank+=schroedingersLoss;
                         consecutiveLosses++;
                         totalConsecutiveLosses++;
-                        wicketWinnings = wicketWinnings + schroedingersLoss;
+                        wicketWinnings += schroedingersLoss;
                         if ((wicketWinnings + gameWinnings) < lowPoint) {
                             lowPoint = gameWinnings+ wicketWinnings;
                         }
@@ -177,7 +195,6 @@ public class Application {
                         if (spun == perGameSpinCount) {
                             spun--;
                         }
-
                     }
 
                     //Wicket - cut and run
@@ -192,23 +209,22 @@ public class Application {
                         bet = betDefault;
                         consecutiveLosses = 0;
                         wicketWinnings = 0;
+
+                        //Quit past the threshold
+                        if(gameWinnings < (walkAwayTolerance * -1)){
+                            spun = perGameSpinCount*2;
+                        }
                     } else {
                         if (consecutiveLosses == chipsOnBoard) {
                             chipsOnBoard++;
                         }
                     }
 
+
                     //Keep playing if there's still hope.
                     if (gameWinnings < 0 && spun == perGameSpinCount && rawSpins < fatigue) {
                         spun--;
                     }
-
-                    //Quit past the threshold
-                    if(lowPoint<(quitThisGameInDefeat * -1)){
-                        gameWinnings+=wicketWinnings;
-                        spun = perGameSpinCount;
-                    }
-
                 }
 
                 tripTotal += gameWinnings;
@@ -217,12 +233,12 @@ public class Application {
 
                 if(gameMode) {
                     System.out.println("%%%%%%%%%%%%%%%");
-                    System.out.println("Game end");
+                    System.out.println("Game end" + " Bank = " + bank);
                     if (gameWinnings<0 ){ System.out.println("LOSS");}
                     System.out.println("    Winnings = " + gameWinnings + " Spins " + rawSpins);
                     System.out.println("        Most consecutive losses " + consecutiveLossRecord);
                     System.out.println("        Low point = " + lowPoint);
-                    System.out.println("        Running trip total = " + tripTotal);
+                    if(weekMode){ System.out.println("        Running trip total = " + tripTotal);};
                     System.out.println("%%%%%%%%%%%%%%%");
                 }
 
@@ -239,7 +255,6 @@ public class Application {
                     lowestLowPoint = lowPoint;
                 }
 
-                bank+=gameWinnings;
                 if(bank<0){
                     System.out.println("FUUUUUUUUCK!!!!!!");
                     spun = perGameSpinCount;
