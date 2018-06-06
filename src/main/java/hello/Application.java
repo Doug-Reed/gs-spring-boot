@@ -54,7 +54,7 @@ public class Application {
         int gameWinnings = 0;
         int gameStartingCash=0;
 
-        int walkAwayTolerance;
+        double walkAwayTolerance;
         int lowPoint = 0;
         int lowestLowPoint = 0;
 
@@ -79,12 +79,12 @@ public class Application {
 
         //money config
         boolean bankResetMode = false;
-        int bankStartingCash=50;
+        int bankStartingCash;
 
         //Game Config
-        int betDefault = 10;
-        int perGameSpinCount = 100;
-        int fatigue = 400;
+        int betDefault = 1;
+        int perGameSpinCount = 1000;
+        int fatigue = 4000;
         int cutAndRun = 9;
         int numberOfWicketsLossTolerance = 1;
         double quitThisGameInTriumph;
@@ -94,25 +94,34 @@ public class Application {
         boolean gameMode = false;
         boolean weekMode = false;
 
+        bankStartingCash = betDefault * 2000;
+        System.out.println("STARTING CASH NEEDED " + bankStartingCash);
         bank = bankStartingCash;
         config = "bet= " + betDefault + " spins per game= " + perGameSpinCount;
         lowestLowPoint = 0;
 
+        int wicketLoss = 0;
+
+        //Calculate wicket loss
+        for(int i=1; i <= cutAndRun; i++){
+            int increment = i * betDefault;
+            int bonus = i-chipsOnBoardDefault;
+            wicketLoss+=increment*chipsOnBoardDefault;
+            if(bonus>0){
+                wicketLoss+=bonus*increment;
+            }
+        }
+
+        walkAwayTolerance = (numberOfWicketsLossTolerance * wicketLoss) * .9;
+        quitThisGameInTriumph = wicketLoss * 1.5;
+        System.out.println("Wicket value = " + wicketLoss);
+        System.out.println("LOSS TOLERANCE = " + walkAwayTolerance);
+        System.out.println(("WIN TOLERANCE = ") + quitThisGameInTriumph);
+
+
         //Trip loop
         while (tripsTakenToVegas < tripsToVegas) {
 
-            int wicketLoss = 0;
-            //Calculate wicket loss
-            for(int i=1; i <= cutAndRun; i++){
-                int bonus = i-chipsOnBoardDefault;
-                wicketLoss+=betDefault*i*chipsOnBoardDefault;
-                if(bonus>0){
-                    wicketLoss+=bonus*betDefault;
-                }
-            }
-
-            walkAwayTolerance = (numberOfWicketsLossTolerance * wicketLoss) -1;
-            quitThisGameInTriumph = wicketLoss * 1.5;
 
             gamesPlayed = 0;
             tripTotal = 0;
@@ -137,7 +146,6 @@ public class Application {
                     }
                 }
 
-                gameStartingCash = bank;
                 gamesPlayed++;
                 gamesPlayedToday++;
                 spun = 0;
@@ -187,6 +195,9 @@ public class Application {
                         bank+=schroedingersLoss;
                         consecutiveLosses++;
                         totalConsecutiveLosses++;
+                        if (totalConsecutiveLosses > consecutiveLossRecord) {
+                            consecutiveLossRecord = totalConsecutiveLosses;
+                        }
                         wicketWinnings += schroedingersLoss;
                         if ((wicketWinnings + gameWinnings) < lowPoint) {
                             lowPoint = gameWinnings+ wicketWinnings;
