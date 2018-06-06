@@ -83,16 +83,22 @@ public class Application {
 
         //Game Config
         int betDefault = 1;
-        int perGameSpinCount = 1000;
-        int fatigue = 4000;
+        int perGameSpinCount = 100;
+        int fatigue = 200;
         int cutAndRun = 9;
         int numberOfWicketsLossTolerance = 1;
         double quitThisGameInTriumph;
+        int standPat = 0;
 
         //Reporting Config
         boolean spinMode = false;
         boolean gameMode = false;
         boolean weekMode = false;
+        boolean statsMode = true;
+
+        double winToleranceMultiplier = 1.5;
+        double lossToleranceMultiplier = .9;
+
 
         bankStartingCash = betDefault * 2000;
         System.out.println("STARTING CASH NEEDED " + bankStartingCash);
@@ -111,9 +117,12 @@ public class Application {
                 wicketLoss+=bonus*increment;
             }
         }
+        if(standPat>0) {
+            wicketLoss+=standPat*betDefault*chipsOnBoardDefault;
+        }
 
-        walkAwayTolerance = (numberOfWicketsLossTolerance * wicketLoss) * .9;
-        quitThisGameInTriumph = wicketLoss * 1.5;
+        walkAwayTolerance = (numberOfWicketsLossTolerance * wicketLoss) * 1.6;
+        quitThisGameInTriumph = wicketLoss * .9;
         System.out.println("Wicket value = " + wicketLoss);
         System.out.println("LOSS TOLERANCE = " + walkAwayTolerance);
         System.out.println(("WIN TOLERANCE = ") + quitThisGameInTriumph);
@@ -154,6 +163,7 @@ public class Application {
                 consecutiveLossRecord = 0;
                 lowPoint = 0;
                 rawSpins = 0;
+                int standPatAt=0;
 
 //Spin loop
                 while (spun <  perGameSpinCount) {
@@ -179,11 +189,17 @@ public class Application {
                         }
                         totalConsecutiveLosses = 0;
                         consecutiveLosses = 0;
+                        standPatAt = 0;
 
                        if(spinMode){ System.out.println("win " + wicketWinnings + " Running total: " + gameWinnings + " Spins = " + rawSpins);}
 
                         if (wicketWinnings < 0 && spun == perGameSpinCount) {
                             spun = spun - chipsOnBoardDefault;
+                        }
+
+                        if(gameWinnings > 0 && spun > (perGameSpinCount * .90)){
+                           spun = perGameSpinCount * 2;
+                           if(spinMode) {System.out.println("call it a win");}
                         }
 
                         wicketWinnings = 0;
@@ -202,14 +218,19 @@ public class Application {
                         if ((wicketWinnings + gameWinnings) < lowPoint) {
                             lowPoint = gameWinnings+ wicketWinnings;
                         }
-                        bet = bet + betDefault;
+                        if(standPatAt < standPat) {
+                            standPatAt++;
+                        }else{
+                            bet = bet + betDefault;
+                        }
+
                         if (spun == perGameSpinCount) {
                             spun--;
                         }
                     }
 
                     //Wicket - cut and run
-                    if (consecutiveLosses > (cutAndRun -1)) {
+                    if (consecutiveLosses > (cutAndRun -1) + standPat) {
                         gameWinnings+=wicketWinnings;
                         if(gameWinnings < lowPoint) {
                             lowPoint = gameWinnings;
@@ -220,13 +241,14 @@ public class Application {
                         bet = betDefault;
                         consecutiveLosses = 0;
                         wicketWinnings = 0;
+                        standPatAt=standPat;
 
                         //Quit past the threshold
                         if(gameWinnings < (walkAwayTolerance * -1)){
                             spun = perGameSpinCount*2;
                         }
                     } else {
-                        if (consecutiveLosses == chipsOnBoard) {
+                        if (consecutiveLosses - standPat == chipsOnBoard) {
                             chipsOnBoard++;
                         }
                     }
@@ -313,9 +335,17 @@ public class Application {
         System.out.println("Average: " + supremeTotal / tripsToVegas);
         System.out.println("Best week " + bestWeek);
         System.out.println("Losing weeks " + losingWeeks + "/" + tripsToVegas + " Worst week " + worstWeek);
-        System.out.println("Avg win: " + (((winningWeekAmount==0) ? 1:winningWeekAmount)/((winningWeeks==0) ? 1:winningWeeks)));
-        System.out.println("Avg loss " + ((losingWeekAmount==0) ? 1: losingWeekAmount/(losingWeeks==0 ? 1:losingWeeks)) + " Low Point = " + lowestLowPoint);
+        double averageWin = (((winningWeekAmount==0) ? 1:winningWeekAmount)/((winningWeeks==0) ? 1:winningWeeks));
+        double averageLoss = ((losingWeekAmount==0) ? 1: losingWeekAmount/(losingWeeks==0 ? 1:losingWeeks));
+        double winPct = tripsToVegas/losingWeeks;
+        System.out.println("Avg win: " + averageWin);
+        System.out.println("Avg loss " + averageLoss + " Low Point = " + lowestLowPoint);
         System.out.println(config);
+
+        if(statsMode) {
+            System.out.println("Win Tolerance, Loss Tolerance, average win, average loss, win pct");
+            System.out.println(winToleranceMultiplier + "," + lossToleranceMultiplier + "," + averageWin + "," + averageLoss + "," + winPct);
+        }
 
         System.exit(0);
     }
