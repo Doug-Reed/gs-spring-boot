@@ -1,14 +1,13 @@
 package hello;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Random;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-
-import java.util.Random;
 
 @SpringBootApplication
 public class Application {
@@ -38,8 +37,8 @@ public class Application {
 
         int bet;
 
-        int chipsOnBoardDefault = 5;
-        int chipsOnBoard;
+
+        Integer chipsOnBoard;
 
         int bank;
 
@@ -70,6 +69,9 @@ public class Application {
         int worstWeek = 100000;
         int bestWeek=0;
 
+        int wicketsWon=0;
+        int wicketsLost=0;
+
 
         //Number of games config
         int overtimeTolerance = 0;
@@ -78,17 +80,39 @@ public class Application {
         int daysPerTrip = 1;
 
         //money config
-        boolean bankResetMode = false;
+        boolean bankResetMode = true;
         int bankStartingCash;
 
         //Game Config
         int betDefault = 1;
-        int perGameSpinCount = 100;
-        int fatigue = 200;
-        int cutAndRun = 9;
+        ArrayList<Integer> betSequence = new ArrayList<Integer>();
+        ArrayList<Integer> squaresCovered = new ArrayList<Integer>();
+        betSequence.add(1);	squaresCovered.add(5);
+        betSequence.add(1);	squaresCovered.add(5);
+        betSequence.add(1);	squaresCovered.add(5);
+        betSequence.add(2);	squaresCovered.add(5);
+        betSequence.add(3);	squaresCovered.add(5);
+        betSequence.add(4);	squaresCovered.add(6);
+        betSequence.add(5);	squaresCovered.add(7);
+        betSequence.add(7);	squaresCovered.add(8);
+        betSequence.add(8);	squaresCovered.add(9);
+        betSequence.add(15);	squaresCovered.add(18);
+        betSequence.add(30);	squaresCovered.add(18);
+        betSequence.add(60);	squaresCovered.add(18);
+        betSequence.add(150);	squaresCovered.add(18);
+
+
+
+        int winMultiplier = 35;
+        int squaresCoveredByChip = 1;
+
+        int perGameSpinCount = 500;
+        int fatigue = 1000;
+        Integer chipsOnBoardDefault = 5;
+        int cutAndRun = betSequence.size();
         int numberOfWicketsLossTolerance = 1;
         double quitThisGameInTriumph;
-        int standPat = 0;
+        int standPat = 1;
 
         //Reporting Config
         boolean spinMode = false;
@@ -100,7 +124,7 @@ public class Application {
         double lossToleranceMultiplier = .9;
 
 
-        bankStartingCash = betDefault * 2000;
+        bankStartingCash = betDefault * 200000;
         System.out.println("STARTING CASH NEEDED " + bankStartingCash);
         bank = bankStartingCash;
         config = "bet= " + betDefault + " spins per game= " + perGameSpinCount;
@@ -121,8 +145,8 @@ public class Application {
             wicketLoss+=standPat*betDefault*chipsOnBoardDefault;
         }
 
-        walkAwayTolerance = (numberOfWicketsLossTolerance * wicketLoss) * 1.6;
-        quitThisGameInTriumph = wicketLoss * .9;
+        walkAwayTolerance =  (numberOfWicketsLossTolerance * wicketLoss) *1000;
+        quitThisGameInTriumph = wicketLoss * 1000;
         System.out.println("Wicket value = " + wicketLoss);
         System.out.println("LOSS TOLERANCE = " + walkAwayTolerance);
         System.out.println(("WIN TOLERANCE = ") + quitThisGameInTriumph);
@@ -158,8 +182,9 @@ public class Application {
                 gamesPlayed++;
                 gamesPlayedToday++;
                 spun = 0;
-                bet = betDefault;
-                chipsOnBoard = chipsOnBoardDefault;
+                bet = betSequence.get(0);
+                chipsOnBoard = squaresCovered.get(0);
+                int squaresCoveredPerChip = squaresCoveredByChip;
                 consecutiveLossRecord = 0;
                 lowPoint = 0;
                 rawSpins = 0;
@@ -170,13 +195,26 @@ public class Application {
                     spun++;
                     rawSpins++;
                     Random rand = new Random();
-                    int spin = rand.nextInt(38);
+                    int spin = rand.nextInt(37);
 
-                    schroedingersWin = ((bet * 35) - ((chipsOnBoard - 1) * bet));
-                    schroedingersLoss = (bet * chipsOnBoard) * -1;
+                    if(spin==0) {
+                        spin = 0;
+                    }
 
-                    if (spin <=  chipsOnBoard) {
+                    if (spin==36) {
+                        spin = 36;
+                    }
+
+                    if (spin==37) {
+                        spin = 37;
+                    }
+
+                    schroedingersWin = ((bet * winMultiplier) - (((chipsOnBoard/squaresCoveredByChip) - 1) * bet));
+                    schroedingersLoss = (bet * (chipsOnBoard/squaresCoveredByChip)) * -1;
+
+                    if (spin < chipsOnBoard) {
                         //WINNING
+                        wicketsWon++;
                         bank+=schroedingersWin;
                         wicketWinnings = wicketWinnings + (schroedingersWin);
                         gameWinnings+=wicketWinnings;
@@ -187,9 +225,6 @@ public class Application {
                         if (totalConsecutiveLosses > consecutiveLossRecord) {
                             consecutiveLossRecord = totalConsecutiveLosses;
                         }
-                        totalConsecutiveLosses = 0;
-                        consecutiveLosses = 0;
-                        standPatAt = 0;
 
                        if(spinMode){ System.out.println("win " + wicketWinnings + " Running total: " + gameWinnings + " Spins = " + rawSpins);}
 
@@ -197,14 +232,19 @@ public class Application {
                             spun = spun - chipsOnBoardDefault;
                         }
 
+                        totalConsecutiveLosses = 0;
+                        consecutiveLosses = 0;
+                        standPatAt = 0;
+
                         if(gameWinnings > 0 && spun > (perGameSpinCount * .90)){
                            spun = perGameSpinCount * 2;
                            if(spinMode) {System.out.println("call it a win");}
                         }
 
                         wicketWinnings = 0;
-                        chipsOnBoard = chipsOnBoardDefault;
-                        bet = betDefault;
+                        Integer i =  squaresCovered.get(0);
+                        chipsOnBoard = i;
+                        bet = betSequence.get(0);
                     } else {
 
                         //LOSING
@@ -218,11 +258,16 @@ public class Application {
                         if ((wicketWinnings + gameWinnings) < lowPoint) {
                             lowPoint = gameWinnings+ wicketWinnings;
                         }
-                        if(standPatAt < standPat) {
-                            standPatAt++;
-                        }else{
-                            bet = bet + betDefault;
+                   //     if(standPatAt < standPat) {
+                   //         standPatAt++;
+                   //     }else{
+                        if(consecutiveLosses==betSequence.size()){
+                            bet = betSequence.get(0);
+                        } else{
+                            bet = betSequence.get(consecutiveLosses);
                         }
+
+                    //    }
 
                         if (spun == perGameSpinCount) {
                             spun--;
@@ -230,15 +275,17 @@ public class Application {
                     }
 
                     //Wicket - cut and run
-                    if (consecutiveLosses > (cutAndRun -1) + standPat) {
+                    if (consecutiveLosses > (cutAndRun -1)) {
                         gameWinnings+=wicketWinnings;
                         if(gameWinnings < lowPoint) {
                             lowPoint = gameWinnings;
                         }
 
+                        wicketsLost++;
+
                         if(spinMode){System.out.println("loss " + wicketWinnings + " Running total " + gameWinnings + " Spins = " + rawSpins);}
-                        chipsOnBoard = chipsOnBoardDefault;
-                        bet = betDefault;
+                        chipsOnBoard = squaresCovered.get(0);
+                        bet = betSequence.get(0);
                         consecutiveLosses = 0;
                         wicketWinnings = 0;
                         standPatAt=standPat;
@@ -248,9 +295,8 @@ public class Application {
                             spun = perGameSpinCount*2;
                         }
                     } else {
-                        if (consecutiveLosses - standPat == chipsOnBoard) {
-                            chipsOnBoard++;
-                        }
+                        chipsOnBoard = squaresCovered.get(consecutiveLosses > 0 ? consecutiveLosses:0);
+
                     }
 
 
@@ -335,6 +381,11 @@ public class Application {
         System.out.println("Average: " + supremeTotal / tripsToVegas);
         System.out.println("Best week " + bestWeek);
         System.out.println("Losing weeks " + losingWeeks + "/" + tripsToVegas + " Worst week " + worstWeek);
+        System.out.println("Wickets Won-lost " + wicketsWon + "-" + wicketsLost );
+        if (statsMode) {
+
+
+
         double averageWin = (((winningWeekAmount==0) ? 1:winningWeekAmount)/((winningWeeks==0) ? 1:winningWeeks));
         double averageLoss = ((losingWeekAmount==0) ? 1: losingWeekAmount/(losingWeeks==0 ? 1:losingWeeks));
         double winPct = tripsToVegas/losingWeeks;
@@ -342,18 +393,11 @@ public class Application {
         System.out.println("Avg loss " + averageLoss + " Low Point = " + lowestLowPoint);
         System.out.println(config);
 
-        if(statsMode) {
+
             System.out.println("Win Tolerance, Loss Tolerance, average win, average loss, win pct");
             System.out.println(winToleranceMultiplier + "," + lossToleranceMultiplier + "," + averageWin + "," + averageLoss + "," + winPct);
         }
 
         System.exit(0);
     }
-
-    @Bean
-    public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
-        return args -> {
-        };
-    }
-
 }
