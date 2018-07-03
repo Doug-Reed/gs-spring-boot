@@ -88,20 +88,12 @@ public class Application {
         ArrayList<Integer> betSequence = new ArrayList<Integer>();
         ArrayList<Integer> squaresCovered = new ArrayList<Integer>();
         betSequence.add(1);	squaresCovered.add(5);
-        betSequence.add(1);	squaresCovered.add(5);
-        betSequence.add(1);	squaresCovered.add(5);
         betSequence.add(2);	squaresCovered.add(5);
         betSequence.add(3);	squaresCovered.add(5);
         betSequence.add(4);	squaresCovered.add(6);
         betSequence.add(5);	squaresCovered.add(7);
         betSequence.add(7);	squaresCovered.add(8);
         betSequence.add(8);	squaresCovered.add(9);
-        betSequence.add(15);	squaresCovered.add(18);
-        betSequence.add(30);	squaresCovered.add(18);
-        betSequence.add(60);	squaresCovered.add(18);
-        betSequence.add(150);	squaresCovered.add(18);
-
-
 
         int winMultiplier = 35;
         int squaresCoveredByChip = 1;
