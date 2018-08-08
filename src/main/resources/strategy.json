@@ -1,0 +1,948 @@
+{
+    "strategy": [
+        {
+            "order of operation": 1,
+            "operation": "surrender",
+            "default action": "no surrender",
+            "exceptions": [
+                {
+                    "total": 15,
+                    "hit17_stand17": "both",
+                    "dealer-upcard": [
+                        {
+                            "upcard": 9,
+                            "action": "surrender",
+                            "comparator": ">=",
+                            "count-type": "true-count",
+                            "count": 2,
+                            "sentence": "15 surrenders vs 9 at or above a true 2."
+                        },
+                        {
+                            "upcard": 10,
+                            "action": "surrender",
+                            "comparator": ">=",
+                            "count-type": "running-count",
+                            "count": 0,
+                            "sentence": "15 only surrenders vs 10 at a positive running count."
+                        }
+                    ]
+                },
+                {
+                    "total": 15,
+                    "hit17_stand17": "hit",
+                    "dealer-upcard": [
+                        {
+                            "upcard": "A",
+                            "action": "surrender",
+                            "comparator": ">=",
+                            "count-type": "true-count",
+                            "count": -1,
+                            "sentence": "15 surrenders vs Ace at or above a true -1 in a hit 17 game."
+                        }
+                    ]
+                },
+                {
+                    "total": 15,
+                    "hit17_stand17": "stand",
+                    "dealer-upcard": [
+                        {
+                            "upcard": "A",
+                            "action": "surrender",
+                            "comparator": ">=",
+                            "count-type": "true-count",
+                            "count": 2,
+                            "sentence": "15 surrenders vs Ace at or above a true 2 in a stand 17 game."
+                        }
+                    ]
+                },
+                {
+                    "total": 16,
+                    "hit17_stand17": "both",
+                    "dealer-upcard": [
+                        {
+                            "upcard": 8,
+                            "action": "surrender",
+                            "comparator": ">=",
+                            "count-type": "true-count",
+                            "count": 4,
+                            "sentence": "16 surrenders vs 8 at or above a true 4."
+                        },
+                        {
+                            "upcard": 9,
+                            "action": "surrender",
+                            "comparator": ">=",
+                            "count-type": "true-count",
+                            "count": -1,
+                            "sentence": "16 only surrenders vs 9 at or above a true -1."
+                        },
+                        {
+                            "upcard": 10,
+                            "action": "surrender",
+                            "sentence": "16 always surrenders vs 10."
+                        },
+                        {
+                            "upcard": "A",
+                            "action": "surrender",
+                            "sentence": "16 always surrenders vs an ace."
+                        }
+                    ]
+                },
+                {
+                    "total": 17,
+                    "hit17_stand17": "hit",
+                    "dealer-upcard": [
+                        {
+                            "upcard": "A",
+                            "action": "surrender",
+                            "sentence": "17 always surrenders vs Ace in an H17 game."
+                        }
+                    ]
+                },
+                {
+                    "total": 16,
+                    "hit17_stand17": "hit",
+                    "dealer-upcard": []
+                },
+                {
+                    "total": 16,
+                    "hit17_stand17": "stand",
+                    "dealer-upcard": [
+                        {
+                            "upcard": 9,
+                            "action": "surrender",
+                            "comparator": ">=",
+                            "count-type": "true-count",
+                            "count": -1,
+                            "sentence": "16 only surrenders vs 9 at or above a true -1."
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "order of operation": 2,
+            "operation": "split",
+            "default action": "no split",
+            "exceptions": [
+                {
+                    "total": "AA",
+                    "hit17_stand17": "both",
+                    "first-play": true,
+                    "dealer-upcard": "any",
+                    "action": "split",
+                    "sentence": "Pair of aces always splits."
+                },
+                {
+                    "total": 20,
+                    "hit17_stand17": "both",
+                    "first-play": true,
+                    "dealer-upcard": [
+                        {
+                            "upcard": 4,
+                            "action": "split",
+                            "comparator": ">=",
+                            "count-type": "true-count",
+                            "count": 6,
+                            "sentence": "Split a pair of tens at or above a true 6."
+                        },
+                        {
+                            "upcard": 5,
+                            "action": "split",
+                            "comparator": ">=",
+                            "count-type": "true-count",
+                            "count": 5,
+                            "sentence": "Split a pair of tens at or above a true 5."
+                        },
+                        {
+                            "upcard": 6,
+                            "action": "split",
+                            "comparator": ">=",
+                            "count-type": "true-count",
+                            "count": 4,
+                            "sentence": "Split a pair of tens at or above a true 4."
+                        }
+                    ]
+                },
+                {
+                    "total": 18,
+                    "hit17_stand17": "both",
+                    "first-play": true,
+                    "dealer-upcard": [
+                        {
+                            "upcard": 2,
+                            "action": "split"
+                        },
+                        {
+                            "upcard": 3,
+                            "action": "split"
+                        },
+                        {
+                            "upcard": 4,
+                            "action": "split"
+                        },
+                        {
+                            "upcard": 5,
+                            "action": "split"
+                        },
+                        {
+                            "upcard": 6,
+                            "action": "split"
+                        },
+                        {
+                            "upcard": 8,
+                            "action": "split"
+                        },
+                        {
+                            "upcard": 9,
+                            "action": "split"
+                        }
+                    ]
+                },
+                {
+                    "total": "16",
+                    "hit17_stand17": "both",
+                    "first-play": true,
+                    "dealer-upcard": "any",
+                    "action": "split"
+                },
+                {
+                    "total": "14",
+                    "hit17_stand17": "both",
+                    "first-play": true,
+                    "dealer-upcard": [
+                        {
+                            "upcard": 2,
+                            "action": "split"
+                        },
+                        {
+                            "upcard": 3,
+                            "action": "split"
+                        },
+                        {
+                            "upcard": 4,
+                            "action": "split"
+                        },
+                        {
+                            "upcard": 5,
+                            "action": "split"
+                        },
+                        {
+                            "upcard": 6,
+                            "action": "split"
+                        },
+                        {
+                            "upcard": 7,
+                            "action": "split"
+                        }
+                    ]
+                },
+                {
+                    "total": "12",
+                    "hit17_stand17": "both",
+                    "first-play": true,
+                    "das": true,
+                    "dealer-upcard": [
+                        {
+                            "upcard": 2,
+                            "action": "split"
+                        }
+                    ]
+                },
+                {
+                    "total": "12",
+                    "hit17_stand17": "both",
+                    "first-play": true,
+                    "dealer-upcard": [
+                        {
+                            "upcard": 3,
+                            "action": "split"
+                        },
+                        {
+                            "upcard": 4,
+                            "action": "split"
+                        },
+                        {
+                            "upcard": 5,
+                            "action": "split"
+                        },
+                        {
+                            "upcard": 6,
+                            "action": "split"
+                        }
+                    ]
+                },
+                {
+                    "total": "8",
+                    "hit17_stand17": "both",
+                    "first-play": true,
+                    "das": true,
+                    "dealer-upcard": [
+                        {
+                            "upcard": 5,
+                            "action": "split"
+                        },
+                        {
+                            "upcard": 6,
+                            "action": "split"
+                        }
+                    ]
+                },
+                {
+                    "total": "6",
+                    "hit17_stand17": "both",
+                    "first-play": true,
+                    "das": true,
+                    "dealer-upcard": [
+                        {
+                            "upcard": 2,
+                            "action": "split"
+                        },
+                        {
+                            "upcard": 3,
+                            "action": "split"
+                        }
+                    ]
+                },
+                {
+                    "total": "6",
+                    "hit17_stand17": "both",
+                    "first-play": true,
+                    "dealer-upcard": [
+                        {
+                            "upcard": 4,
+                            "action": "split"
+                        },
+                        {
+                            "upcard": 5,
+                            "action": "split"
+                        },
+                        {
+                            "upcard": 6,
+                            "action": "split"
+                        },
+                        {
+                            "upcard": 7,
+                            "action": "split"
+                        }
+                    ]
+                },
+                {
+                    "total": "4",
+                    "hit17_stand17": "both",
+                    "first-play": true,
+                    "das": true,
+                    "dealer-upcard": [
+                        {
+                            "upcard": 2,
+                            "action": "split"
+                        },
+                        {
+                            "upcard": 3,
+                            "action": "split"
+                        }
+                    ]
+                },
+                {
+                    "total": "4",
+                    "hit17_stand17": "both",
+                    "first-play": true,
+                    "dealer-upcard": [
+                        {
+                            "upcard": 4,
+                            "action": "split"
+                        },
+                        {
+                            "upcard": 5,
+                            "action": "split"
+                        },
+                        {
+                            "upcard": 6,
+                            "action": "split"
+                        },
+                        {
+                            "upcard": 7,
+                            "action": "split"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "order of operation": 3,
+            "operation": "soft hands",
+            "default action": "hit",
+            "exceptions": [
+                {
+                    "total": "21",
+                    "hit17_stand17": "both",
+                    "dealer-upcard": "any",
+                    "action": "stand"
+                },
+                {
+                    "total": "20",
+                    "hit17_stand17": "both",
+                    "dealer-upcard": "any",
+                    "action": "stand"
+                },
+                {
+                    "total": "19",
+                    "hit17_stand17": "both",
+                    "dealer-upcard": [
+                        {
+                            "upcard": 2,
+                            "action": "stand"
+                        },
+                        {
+                            "upcard": 3,
+                            "action": "stand"
+                        },
+                        {
+                            "upcard": 4,
+                            "action": "double",
+                            "first-play": true,
+                            "comparator": ">=",
+                            "count-type": "true-count",
+                            "count": 3,
+                            "sentence": "A soft 19 doubles vs. 4 at a true count of 3 and above."
+                        },
+                        {
+                            "upcard": 4,
+                            "action": "stand",
+                            "first-play": false,
+                            "comparator": "<",
+                            "count-type": "true-count",
+                            "count": 3
+                        },
+                        {
+                            "upcard": 5,
+                            "action": "double",
+                            "first-play": true,
+                            "comparator": ">=",
+                            "count-type": "true-count",
+                            "count": 1,
+                            "sentence": "A soft 19 doubles vs. 5 at a true count of 1 and above."
+                        },
+                        {
+                            "upcard": 5,
+                            "action": "stand",
+                            "first-play": false,
+                            "comparator": "<",
+                            "count-type": "true-count",
+                            "count": 1
+                        },
+                        {
+                            "upcard": 7,
+                            "action": "stand"
+                        },
+                        {
+                            "upcard": 8,
+                            "action": "stand"
+                        },
+                        {
+                            "upcard": 9,
+                            "action": "stand"
+                        },
+                        {
+                            "upcard": 10,
+                            "action": "stand"
+                        },
+                        {
+                            "upcard": "A",
+                            "action": "stand"
+                        }
+                    ]
+                },
+                {
+                    "total": "19",
+                    "hit17_stand17": "hit",
+                    "dealer-upcard": [
+                        {
+                            "upcard": 6,
+                            "action": "stand",
+                            "first-play": true,
+                            "comparator": "<",
+                            "count-type": "running-count",
+                            "count": 0,
+                            "sentence": "A soft 19 doubles vs. 6 at a negative running count."
+                        },
+                        {
+                            "upcard": 6,
+                            "action": "stand",
+                            "first-play": false,
+                            "comparator": ">",
+                            "count-type": "running-count",
+                            "count": 0,
+                            "sentence": "A soft 19 stands vs. 6 at a positive running count."
+                        }
+                    ]
+                },
+                {
+                    "total": 19,
+                    "hit17_stand17": "stand",
+                    "dealer-upcard": [
+                        {
+                            "upcard": 6,
+                            "action": "double",
+                            "first-play": true,
+                            "comparator": ">=",
+                            "count-type": "true-count",
+                            "count": 1,
+                            "sentence": "In stand 17, a soft 19 doubles vs. 6 at a at a true count of 1 and above."
+                        },
+                        {
+                            "upcard": 6,
+                            "action": "stand",
+                            "first-play": false,
+                            "comparator": "<",
+                            "count-type": "true-count",
+                            "count": 1
+                        }
+                    ]
+                },
+                {
+                    "total": 18,
+                    "hit17_stand17": "both",
+                    "dealer-upcard": [
+                        {
+                            "upcard": 2,
+                            "action": "double",
+                            "first-play": true
+                        },
+                        {
+                            "upcard": 2,
+                            "action": "stand",
+                            "first-play": false
+                        },
+                        {
+                            "upcard": 3,
+                            "action": "double",
+                            "first-play": true
+                        },
+                        {
+                            "upcard": 3,
+                            "action": "stand",
+                            "first-play": false
+                        },
+                        {
+                            "upcard": 4,
+                            "action": "double",
+                            "first-play": true
+                        },
+                        {
+                            "upcard": 4,
+                            "action": "stand",
+                            "first-play": false
+                        },
+                        {
+                            "upcard": 5,
+                            "action": "double",
+                            "first-play": true
+                        },
+                        {
+                            "upcard": 5,
+                            "action": "stand",
+                            "first-play": false
+                        },
+                        {
+                            "upcard": 6,
+                            "action": "double",
+                            "first-play": true
+                        },
+                        {
+                            "upcard": 6,
+                            "action": "stand",
+                            "first-play": false
+                        },
+                        {
+                            "upcard": 7,
+                            "action": "stand"
+                        },
+                        {
+                            "upcard": 8,
+                            "action": "stand"
+                        }
+                    ]
+                },
+                {
+                    "total": 17,
+                    "hit17_stand17": "both",
+                    "dealer-upcard": [
+                        {
+                            "upcard": 2,
+                            "action": "double",
+                            "first-play": true,
+                            "comparator": ">=",
+                            "count-type": "true-count",
+                            "count": 1,
+                            "sentence": "Soft 19 doubles vs. 2 at a at a true count of 1 and above."
+                        },
+                        {
+                            "upcard": 3,
+                            "action": "double",
+                            "first-play": true
+                        },
+                        {
+                            "upcard": 3,
+                            "action": "stand",
+                            "first-play": false
+                        },
+                        {
+                            "upcard": 4,
+                            "action": "double",
+                            "first-play": true
+                        },
+                        {
+                            "upcard": 4,
+                            "action": "stand",
+                            "first-play": false
+                        },
+                        {
+                            "upcard": 5,
+                            "action": "double",
+                            "first-play": true
+                        },
+                        {
+                            "upcard": 5,
+                            "action": "stand",
+                            "first-play": false
+                        },
+                        {
+                            "upcard": 6,
+                            "action": "double",
+                            "first-play": true
+                        },
+                        {
+                            "upcard": 6,
+                            "action": "stand",
+                            "first-play": false
+                        }
+                    ]
+                },
+                {
+                    "total": 16,
+                    "hit17_stand17": "both",
+                    "dealer-upcard": [
+                        {
+                            "upcard": 4,
+                            "action": "double",
+                            "first-play": true
+                        },
+                        {
+                            "upcard": 4,
+                            "action": "stand",
+                            "first-play": false
+                        },
+                        {
+                            "upcard": 5,
+                            "action": "double",
+                            "first-play": true
+                        },
+                        {
+                            "upcard": 5,
+                            "action": "stand",
+                            "first-play": false
+                        },
+                        {
+                            "upcard": 6,
+                            "action": "double",
+                            "first-play": true
+                        },
+                        {
+                            "upcard": 6,
+                            "action": "stand",
+                            "first-play": false
+                        }
+                    ]
+                },
+                {
+                    "total": 15,
+                    "hit17_stand17": "both",
+                    "dealer-upcard": [
+                        {
+                            "upcard": 4,
+                            "action": "double",
+                            "first-play": true
+                        },
+                        {
+                            "upcard": 4,
+                            "action": "stand",
+                            "first-play": false
+                        },
+                        {
+                            "upcard": 5,
+                            "action": "double",
+                            "first-play": true
+                        },
+                        {
+                            "upcard": 5,
+                            "action": "stand",
+                            "first-play": false
+                        },
+                        {
+                            "upcard": 6,
+                            "action": "double",
+                            "first-play": true
+                        },
+                        {
+                            "upcard": 6,
+                            "action": "stand",
+                            "first-play": false
+                        }
+                    ]
+                },
+                {
+                    "total": 14,
+                    "hit17_stand17": "both",
+                    "dealer-upcard": [
+                        {
+                            "upcard": 5,
+                            "action": "double",
+                            "first-play": true
+                        },
+                        {
+                            "upcard": 5,
+                            "action": "stand",
+                            "first-play": false
+                        },
+                        {
+                            "upcard": 6,
+                            "action": "double",
+                            "first-play": true
+                        },
+                        {
+                            "upcard": 6,
+                            "action": "stand",
+                            "first-play": false
+                        }
+                    ]
+                },
+                {
+                    "total": 13,
+                    "hit17_stand17": "both",
+                    "dealer-upcard": [
+                        {
+                            "upcard": 5,
+                            "action": "double",
+                            "first-play": true
+                        },
+                        {
+                            "upcard": 5,
+                            "action": "stand",
+                            "first-play": false
+                        },
+                        {
+                            "upcard": 6,
+                            "action": "double",
+                            "first-play": true
+                        },
+                        {
+                            "upcard": 6,
+                            "action": "stand",
+                            "first-play": false
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "order of operation": 4,
+            "operation": "hard hands",
+            "default action": "hit",
+            "exceptions": [
+                {
+                    "total": "21",
+                    "hit17_stand17": "both",
+                    "dealer-upcard": "any",
+                    "action": "stand"
+                },
+                {
+                    "total": "20",
+                    "hit17_stand17": "both",
+                    "dealer-upcard": "any",
+                    "action": "stand"
+                },
+                {
+                    "total": "19",
+                    "hit17_stand17": "both",
+                    "dealer-upcard": "any",
+                    "action": "stand"
+                },
+                {
+                    "total": "18",
+                    "hit17_stand17": "both",
+                    "dealer-upcard": "any",
+                    "action": "stand"
+                },
+                {
+                    "total": "17",
+                    "hit17_stand17": "both",
+                    "dealer-upcard": "any",
+                    "action": "stand"
+                },
+                {
+                    "total": 16,
+                    "hit17_stand17": "both",
+                    "dealer-upcard": [
+                        {
+                            "upcard": 2,
+                            "action": "stand"
+                        },
+                        {
+                            "upcard": 3,
+                            "action": "stand"
+                        },
+                        {
+                            "upcard": 4,
+                            "action": "stand"
+                        },
+                        {
+                            "upcard": 5,
+                            "action": "stand"
+                        },
+                        {
+                            "upcard": 6,
+                            "action": "stand"
+                        },
+                        {
+                            "upcard": 9,
+                            "action": "stand",
+                            "comparator": ">=",
+                            "count-type": "true-count",
+                            "count": 4,
+                            "sentence": "16 stands vs. 9 at a true 4 and above."
+                        },
+                        {
+                            "upcard": 10,
+                            "action": "stand",
+                            "comparator": ">=",
+                            "count-type": "running-count",
+                            "count": 0,
+                            "sentence": "16 stands vs. 10 at any positive running count."
+                        }
+                    ]
+                },
+                {
+                    "total": 16,
+                    "hit17_stand17": "hit",
+                    "dealer-upcard": [
+                        {
+                            "upcard": "A",
+                            "action": "stand",
+                            "first-play": true,
+                            "comparator": ">=",
+                            "count-type": "true-count",
+                            "count": 3,
+                            "sentence": "16 stands vs. ace at or above a true 3."
+                        }
+                    ]
+                },
+                {
+                    "total": 15,
+                    "hit17_stand17": "both",
+                    "dealer-upcard": [
+                        {
+                            "upcard": 2,
+                            "action": "stand"
+                        },
+                        {
+                            "upcard": 3,
+                            "action": "stand"
+                        },
+                        {
+                            "upcard": 4,
+                            "action": "stand"
+                        },
+                        {
+                            "upcard": 5,
+                            "action": "stand"
+                        },
+                        {
+                            "upcard": 6,
+                            "action": "stand"
+                        },
+                        {
+                            "upcard": 10,
+                            "action": "stand",
+                            "first-play": true,
+                            "comparator": ">=",
+                            "count-type": "running-count",
+                            "count": 4,
+                            "sentence": "15 stands vs. 10 at or above a true 4."
+                        }
+                    ]
+                },
+                {
+                    "total": 15,
+                    "hit17_stand17": "hit",
+                    "dealer-upcard": [
+                        {
+                            "upcard": "A",
+                            "action": "stand",
+                            "first-play": true,
+                            "comparator": ">=",
+                            "count-type": "running-count",
+                            "count": 5,
+                            "sentence": "Hit 17: 15 stands vs. ace at or above a true 5."
+                        }
+                    ]
+                },
+                {
+                    "total": 14,
+                    "hit17_stand17": "both",
+                    "dealer-upcard": [
+                        {
+                            "upcard": 2,
+                            "action": "stand"
+                        },
+                        {
+                            "upcard": 3,
+                            "action": "stand"
+                        },
+                        {
+                            "upcard": 4,
+                            "action": "stand"
+                        },
+                        {
+                            "upcard": 5,
+                            "action": "stand"
+                        },
+                        {
+                            "upcard": 6,
+                            "action": "stand"
+                        }
+                    ]
+                },
+                {
+                    "total": 13,
+                    "hit17_stand17": "both",
+                    "dealer-upcard": [
+                        {
+                            "upcard": 2,
+                            "action": "stand",
+                            "comparator": ">",
+                            "count-type": "true-count",
+                            "count": -1,
+                            "sentence": "13 hits vs. 2 at a true count of -1 and below."
+                        },
+                        {
+                            "upcard": 3,
+                            "action": "stand"
+                        },
+                        {
+                            "upcard": 4,
+                            "action": "stand"
+                        },
+                        {
+                            "upcard": 5,
+                            "action": "stand"
+                        },
+                        {
+                            "upcard": 6,
+                            "action": "stand"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
