@@ -9,13 +9,53 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
+import biz.casino.slot.reelStripper.ReelFragment;
+import biz.casino.slot.reelStripper.ReelFragmentListMaker;
+import biz.casino.slot.reelStripper.ReelFragmentMatcher;
+
 @SpringBootApplication
 public class Application {
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
+        
+        ReelFragment one = new ReelFragment();
+        one.addSymbol("b");
+        one.addSymbol("c");
+        one.addSymbol("d");
+        one.addSymbol("e");
+        one.addSymbol("f");
 
+        ReelFragment two = new ReelFragment();
+        two.addSymbol("e");
+        two.addSymbol("f");
+        two.addSymbol("g");
 
+        ReelFragment three = new ReelFragment();
+        three.addSymbol("z");
+        three.addSymbol("a");
+        three.addSymbol("b");
+
+        ReelFragment four = new ReelFragment();
+        four.addSymbol("g");
+        four.addSymbol("z");
+        four.addSymbol("a");
+
+        ReelFragmentListMaker lm = new ReelFragmentListMaker();
+        lm.addReelFragment(four);
+        lm.addReelFragment(three);
+        lm.addReelFragment(two);
+        lm.addReelFragment(one);
+
+        lm.makeMaster();
+
+        System.out.println("DONE");
+
+       // ReelFragmentMatcher lip = new ReelFragmentMatcher();
+       // three = lip.doIMatch(two, one);
+
+       // System.out.println("RESULT = " + three.toString());
+/*
         String config;
 
 
@@ -389,7 +429,7 @@ public class Application {
             System.out.println("Win Tolerance, Loss Tolerance, average win, average loss, win pct");
             System.out.println(winToleranceMultiplier + "," + lossToleranceMultiplier + "," + averageWin + "," + averageLoss + "," + winPct);
         }
-
+*/
         System.exit(0);
     }
 }
